@@ -1,10 +1,7 @@
-var StockChart = {
+const CompanyTwoStock = {
 
     populate: function (rawDbData) {
-        console.log(StockChart._getFormattedData(rawDbData));
-        var d = new Date();
-        var ms = d.getTime();
-        var data = StockChart._getFormattedData(rawDbData);
+        var data = CompanyTwoStock._getFormattedData(rawDbData);
         Highcharts.stockChart('chartContainer', {
 
             title: {
@@ -13,17 +10,17 @@ var StockChart = {
 
             rangeSelector: {
                 buttons: [{
-                    type: 'hour',
-                    count: 1,
-                    text: '1h'
+                    type: 'month',
+                    count: 3,
+                    text: '3m'
                 }, {
-                    type: 'day',
+                    type: 'year',
                     count: 1,
-                    text: '1D'
+                    text: '1y'
                 }, {
-                    type: 'all',
-                    count: 1,
-                    text: 'All'
+                    type: 'year',
+                    count: 10,
+                    text: '10y'
                 }],
                 selected: 1,
                 inputEnabled: false
@@ -41,10 +38,10 @@ var StockChart = {
     },
 
     _getFormattedData: function (days) {
-        var date = new Date();
-        var ms = date.getTime();
+        // var date = new Date();
+        // var ms = date.getTime();
         var formattedDays = days.map(d => {
-            return [ms + 86400000 * d.day, d.open, d.high, d.low, d.close];
+            return [SECONDS_IN_A_DAY * d.day, d.open, d.high, d.low, d.close];
         })
         return formattedDays;
     }
