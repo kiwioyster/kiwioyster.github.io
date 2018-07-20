@@ -1,7 +1,10 @@
 // This works on all devices/browsers, and uses IndexedDBShim as a final fallback 
 var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
 // var DB = {};
-var dbRequest = indexedDB.open("StocksDatabase", 1)
+var dbRequest = indexedDB.open("StocksDatabase", 1);
+var companyOne = new Company('Number One Consulting', 'ONE');
+var companyTwo = new Company('Twice Manufacturing Ltd.', 'TWM');
+var companyThree = new Company('Trifactor Inc.', 'TRIF');
 
 dbRequest.onupgradeneeded = function () {
     // var db = dbRequest.result;
@@ -29,25 +32,35 @@ dbRequest.onupgradeneeded = function () {
 
 dbRequest.onsuccess = function () {
     var getAllCompanyOne = DB.getAll(COMPANY_ONE);
-    var getAllCompanyTwo = DB.getAll(COMPANY_THREE);
+    var getAllCompanyTwo = DB.getAll(COMPANY_TWO);
+    var getAllCompanyThree = DB.getAll(COMPANY_THREE);
     var getAllQuarterlyGdp = DB.getAll(QUARTERLY_GDP);
-    getAllCompanyTwo.onsuccess = function () {
-        if (getAllCompanyTwo.result.prices) {
-            CompanyOneStock.populate(getAllCompanyTwo.result.prices);
-        } else {
-            CompanyOneStock.populate(getAllCompanyTwo.result);
-        }
-    }
-    // getAllCompanyTwo.onsuccess = function () {
-    // if (getAllCompanyTwo.result.prices) {
-    //     CompanyTwoStock.populate(getAllCompanyTwo.result.prices);
-    // } else {
-    //     CompanyTwoStock.populate(getAllCompanyTwo.result);
-    // }
-    // }
+
     getAllQuarterlyGdp.onsuccess = function () {
         QUARTERLY_GDP_ARRAY.set(getAllQuarterlyGdp.result);
     }
+    getAllCompanyTwo.onsuccess = function () {
+        if (getAllCompanyTwo.result.prices) {
+            companyTwo.stockPrice = getAllCompanyTwo.result.prices;
+        } else {
+            companyTwo.stockPrice = getAllCompanyTwo.result;
+        }
+    }
+    getAllCompanyOne.onsuccess = function () {
+        if (getAllCompanyOne.result.prices) {
+            companyOne.stockPrice = getAllCompanyOne.result.prices;
+        } else {
+            companyOne.stockPrice = getAllCompanyOne.result;
+        }
+    }
+    getAllCompanyThree.onsuccess = function () {
+        if (getAllCompanyThree.result.prices) {
+            companyThree.stockPrice = getAllCompanyThree.result.prices;
+        } else {
+            companyThree.stockPrice = getAllCompanyThree.result;
+        }
+    }
+
 }
 
 const DB = {

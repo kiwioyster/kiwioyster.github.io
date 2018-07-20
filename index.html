@@ -4,201 +4,99 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  body {
+    font-family: "Lato", sans-serif
+  }
+
+  .mySlides {
+    display: none
+  }
+</style>
+
+<script type="text/javascript" src="./src/global-data.set.js"></script>
+<script type="text/javascript" src="./src/database/store-names.set.js"></script>
+<script type="text/javascript" src="./src/companies/company.class.js"></script>
+<script type="text/javascript" src="./src/database/database-request.js"></script>
+<script type="text/javascript" src="./src/services/price-generators/gdp-gaussian-based.object.js"></script>
 
 <body>
 
-  <!-- Navbar (sit on top) -->
+  <!-- Navbar -->
   <div class="w3-top">
-    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-      <a href="#home" class="w3-bar-item w3-button">
-        <b>Door</b> &amp;
-        <b>Window</b> Solutions</a>
-      <!-- Float links to the right. Hide them on small screens -->
-      <div class="w3-right w3-hide-small">
-        <a href="#projects" class="w3-bar-item w3-button">Projects</a>
-        <a href="#about" class="w3-bar-item w3-button">About</a>
-        <a href="#contact" class="w3-bar-item w3-button">Contact</a>
-      </div>
+    <div class="w3-bar w3-black w3-card">
+      <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()"
+        title="Toggle Navigation Menu">
+        <i class="fa fa-bars"></i>
+      </a>
+      <a href="#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
+      <a href="#" class="w3-bar-item w3-button w3-padding-large" onClick="companyOne.createChart('chartContainer')">ONE</a>
+      <a href="#" class="w3-bar-item w3-button w3-padding-large" onClick="companyTwo.createChart('chartContainer')">TWM</a>
+      <a href="#" class="w3-bar-item w3-button w3-padding-large" onClick="companyThree.createChart('chartContainer')">TRIF</a>
+
     </div>
   </div>
 
-  <!-- Header -->
-  <header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
-    <img class="w3-image" src="https://www.w3schools.com//w3images/architect.jpg" alt="Architecture" width="1500" height="800">
-    <div class="w3-display-middle w3-margin-top w3-center">
-      <h1 class="w3-xxlarge w3-text-white">
-        <span class="w3-padding w3-black w3-opacity-min">
-          <b>Door &amp; Window</b>
-        </span>
-        <span class="w3-hide-small w3-text-light-grey">Solutions</span>
-      </h1>
+  <script type="text/javascript" src="./lib/highstock.js"></script>
+  <script type="text/javascript" src="./src/stock-chart/company-one/company-one-stock.object.js"></script>
+  <div id="chartContainer" style="height: 880px; width: 100%;"></div>
+
+  <div id="page-wrapper">
+    <div>
+      Select a text file:
+      <input type="file" id="fileInput" />
     </div>
-  </header>
-
-  <!-- Page content -->
-  <div class="w3-content w3-padding" style="max-width:1564px">
-
-    <!-- Project Section -->
-    <div class="w3-container w3-padding-32" id="projects">
-      <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Projects</h3>
-    </div>
-
-    <div class="w3-row-padding">
-      <div class="w3-col l3 m6 w3-margin-bottom">
-        <div class="w3-display-container">
-          <div class="w3-display-topleft w3-black w3-padding">Summer House</div>
-          <img src="https://www.w3schools.com//w3images/house5.jpg" alt="House" style="width:100%">
-        </div>
-      </div>
-      <div class="w3-col l3 m6 w3-margin-bottom">
-        <div class="w3-display-container">
-          <div class="w3-display-topleft w3-black w3-padding">Brick House</div>
-          <img src="https://www.w3schools.com//w3images/house2.jpg" alt="House" style="width:100%">
-        </div>
-      </div>
-      <div class="w3-col l3 m6 w3-margin-bottom">
-        <div class="w3-display-container">
-          <div class="w3-display-topleft w3-black w3-padding">Renovated</div>
-          <img src="https://www.w3schools.com//w3images/house3.jpg" alt="House" style="width:100%">
-        </div>
-      </div>
-      <div class="w3-col l3 m6 w3-margin-bottom">
-        <div class="w3-display-container">
-          <div class="w3-display-topleft w3-black w3-padding">Barn House</div>
-          <img src="https://www.w3schools.com//w3images/house4.jpg" alt="House" style="width:100%">
-        </div>
-      </div>
-    </div>
-
-    <div class="w3-row-padding">
-      <div class="w3-col l3 m6 w3-margin-bottom">
-        <div class="w3-display-container">
-          <div class="w3-display-topleft w3-black w3-padding">Summer House</div>
-          <img src="https://www.w3schools.com//w3images/house2.jpg" alt="House" style="width:99%">
-        </div>
-      </div>
-      <div class="w3-col l3 m6 w3-margin-bottom">
-        <div class="w3-display-container">
-          <div class="w3-display-topleft w3-black w3-padding">Brick House</div>
-          <img src="https://www.w3schools.com//w3images/house5.jpg" alt="House" style="width:99%">
-        </div>
-      </div>
-      <div class="w3-col l3 m6 w3-margin-bottom">
-        <div class="w3-display-container">
-          <div class="w3-display-topleft w3-black w3-padding">Renovated</div>
-          <img src="https://www.w3schools.com//w3images/house4.jpg" alt="House" style="width:99%">
-        </div>
-      </div>
-      <div class="w3-col l3 m6 w3-margin-bottom">
-        <div class="w3-display-container">
-          <div class="w3-display-topleft w3-black w3-padding">Barn House</div>
-          <img src="https://www.w3schools.com//w3images/house3.jpg" alt="House" style="width:99%">
-        </div>
-      </div>
-    </div>
-
-    <!-- About Section -->
-    <div class="w3-container w3-padding-32" id="about">
-      <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">About</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur
-        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      </p>
-    </div>
-
-    <div class="w3-row-padding w3-grayscale">
-      <div class="w3-col l3 m6 w3-margin-bottom">
-        <img src="https://www.w3schools.com//w3images/team2.jpg" alt="John" style="width:100%">
-        <h3>John Doe</h3>
-        <p class="w3-opacity">CEO & Founder</p>
-        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-        <p>
-          <button class="w3-button w3-light-grey w3-block">Contact</button>
-        </p>
-      </div>
-      <div class="w3-col l3 m6 w3-margin-bottom">
-        <img src="https://www.w3schools.com//w3images/team1.jpg" alt="Jane" style="width:100%">
-        <h3>Jane Doe</h3>
-        <p class="w3-opacity">Architect</p>
-        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-        <p>
-          <button class="w3-button w3-light-grey w3-block">Contact</button>
-        </p>
-      </div>
-      <div class="w3-col l3 m6 w3-margin-bottom">
-        <img src="https://www.w3schools.com//w3images/team3.jpg" alt="Mike" style="width:100%">
-        <h3>Mike Ross</h3>
-        <p class="w3-opacity">Architect</p>
-        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-        <p>
-          <button class="w3-button w3-light-grey w3-block">Contact</button>
-        </p>
-      </div>
-      <div class="w3-col l3 m6 w3-margin-bottom">
-        <img src="https://www.w3schools.com//w3images/team4.jpg" alt="Dan" style="width:100%">
-        <h3>Dan Star</h3>
-        <p class="w3-opacity">Architect</p>
-        <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-        <p>
-          <button class="w3-button w3-light-grey w3-block">Contact</button>
-        </p>
-      </div>
-    </div>
-
-    <!-- Contact Section -->
-    <div class="w3-container w3-padding-32" id="contact">
-      <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Contact</h3>
-      <p>Lets get in touch and talk about your next project.</p>
-      <form action="/action_page.php" target="_blank">
-        <input class="w3-input w3-border" type="text" placeholder="Name" required name="Name">
-        <input class="w3-input w3-section w3-border" type="text" placeholder="Email" required name="Email">
-        <input class="w3-input w3-section w3-border" type="text" placeholder="Subject" required name="Subject">
-        <input class="w3-input w3-section w3-border" type="text" placeholder="Comment" required name="Comment">
-        <button class="w3-button w3-black w3-section" type="submit">
-          <i class="fa fa-paper-plane"></i> SEND MESSAGE
-        </button>
-      </form>
-    </div>
-
-    <!-- End page content -->
+    <pre id="fileDisplayArea"></pre>
+    <pre id="csvData"></pre>
+    <button onClick="test()">Show Text</button>
   </div>
 
-  <!-- Google Map -->
-  <div id="googleMap" class="w3-grayscale" style="width:100%;height:450px;"></div>
-
-  <!-- Footer -->
-  <footer class="w3-center w3-black w3-padding-16">
-    <p>Powered by
-      <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
-    </p>
-  </footer>
-
-  <!-- Add Google Maps -->
   <script>
-    function myMap() {
-      myCenter = new google.maps.LatLng(41.878114, -87.629798);
-      var mapOptions = {
-        center: myCenter,
-        zoom: 12,
-        scrollwheel: false,
-        draggable: false,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
+    // Create an array of objects
+    // Use the first line as keys
+    // Split by ","
+    function process(dataString) {
+      var lines = dataString
+        .split(/\n/)
+        .map(function (lineStr) {
+          return lineStr.split(",");
+        });
 
-      var marker = new google.maps.Marker({
-        position: myCenter,
-      });
-      marker.setMap(map);
+      var keys = lines[0];
+
+      var objects = lines
+        .slice(1)
+        .map(function (arr) {
+          return arr.reduce(function (obj, val, i) {
+            obj[keys[i]] = val;
+            return obj;
+          }, {});
+        });
+
+      console.log(objects);
+
+      return JSON.stringify(objects, null, 2);
+    }
+
+
+    function test() {
+      var file = fileInput.files[0];
+      var textType = /text.*/;
+      var csvType = 'text/csv';
+      // if (file.type.match(csvType)) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById("csvData").innerHTML = process(reader.result);
+      }
+
+      reader.readAsText(file);
+      // } else {
+      //   fileDisplayArea.innerText = "File not supported!";
+      // }
     }
   </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU&callback=myMap"></script>
-  <!--
-To use this code on your website, get a free API key from Google.
-Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
--->
 
 </body>
 

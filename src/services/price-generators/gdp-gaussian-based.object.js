@@ -1,13 +1,16 @@
-const GdpGaussianGenerator = {
+class GdpGaussianGenerator {
+    constructor(initialPrice, days, dayOffset = 0) {
+        this.price = this._generatePrices(initialPrice, days, dayOffset);
+    }
 
-    _createRandomDay: (initialPrice, volatility, gdp) => {
+    _createRandomDay(initialPrice, volatility, gdp) {
         var price = initialPrice;
         var openPrice = price;
         var highestPriceToday = price;
         var lowestPriceToday = price;
         var hourlyVol = volatility / Math.sqrt(18 * 365);
         for (var h = 0; h < 12; h++) {
-            price = price * GdpGaussianGenerator._gaussian(1 + gdp / 3, hourlyVol)();
+            price = price * this._gaussian(1 + gdp / 3, hourlyVol)();
             price > highestPriceToday ? highestPriceToday = price : null;
             price < lowestPriceToday ? lowestPriceToday = price : null;
         }
@@ -21,9 +24,9 @@ const GdpGaussianGenerator = {
             vol: null,
             highestClose: 0,
         };
-    },
+    }
 
-    _getNewVolatility: (volArray, priceArray, highestClose) => {
+    _getNewVolatility(volArray, priceArray, highestClose) {
         var newVol;
         const prices = [...priceArray];
         const vol = [...volArray];
@@ -37,33 +40,33 @@ const GdpGaussianGenerator = {
         const lastVol = vol.length - 1;
         const modifier = (prices[lastPrice].close - prices[lastPrice].close / 1.07) / (highestClose - prices[lastPrice].close / 1.07);
 
-        priceChange = prices[lastPrice].close / prices[lastPrice - 1].close - 1;
-        prevPriceChange = prices[lastPrice - 1].close / prices[lastPrice - 2].close - 1;
-        prevPrevPriceChange = prices[lastPrice - 2].close / prices[lastPrice - 3].close - 1;
+        var priceChange = prices[lastPrice].close / prices[lastPrice - 1].close - 1;
+        var prevPriceChange = prices[lastPrice - 1].close / prices[lastPrice - 2].close - 1;
+        var prevPrevPriceChange = prices[lastPrice - 2].close / prices[lastPrice - 3].close - 1;
 
         if (priceChange >= 0) {
             const delta = (1 - 1 / (Math.pow(700 * priceChange + Math.abs(60 * prevPriceChange), 1.5) + 1)) * ((vol[lastVol] - 0.5 * vol[lastVol - 1] - 0.04));
-            newVol = GdpGaussianGenerator._gaussian(vol[lastVol] - modifier * delta, 0.002)();
+            newVol = this._gaussian(vol[lastVol] - modifier * delta, 0.002)();
         } else {
             const mean = -1.3 * priceChange - 0.35 * prevPriceChange - 0.2 * prevPrevPriceChange;
-            newVol = vol[lastVol] + GdpGaussianGenerator._gaussian(mean, 0.002)();
+            newVol = vol[lastVol] + this._gaussian(mean, 0.002)();
         }
         if (newVol > 1.2) {
             newVol = 0.8;
         }
         return newVol;
-    },
+    }
 
-    generatePrices: (initialPrice, days, dayOffset = 0) => {
+    _generatePrices(initialPrice, days, dayOffset) {
         var prices = [];
         var volatility = [0.1];
         var highestClose = 0;
         var openPrice = initialPrice;
         for (var d = dayOffset; d < days + dayOffset; d++) {
             const vol = volatility[d - dayOffset];
-            const dailyGdpGrowth = GdpGaussianGenerator._getForwardGdpGrowth(d);
+            const dailyGdpGrowth = this._getForwardGdpGrowth(d);
 
-            const price = GdpGaussianGenerator._createRandomDay(openPrice, vol, dailyGdpGrowth);
+            const price = this._createRandomDay(openPrice, vol, dailyGdpGrowth);
             price.day = d;
             price.vol = vol;
             price.highestClose = highestClose;
@@ -72,26 +75,26 @@ const GdpGaussianGenerator = {
                 highestClose = price.close;
             }
 
-            const newVol = GdpGaussianGenerator._getNewVolatility(volatility, prices, highestClose);
+            const newVol = this._getNewVolatility(volatility, prices, highestClose);
             volatility.push(newVol);
-            openPrice = price.close * GdpGaussianGenerator._gaussian(1, newVol / Math.sqrt(6 * 365))();
+            openPrice = price.close * this._gaussian(1, newVol / Math.sqrt(6 * 365))();
 
         }
         return prices;
-    },
+    }
 
-    _getForwardGdpGrowth: (day) => {
+    _getForwardGdpGrowth(day) {
         var date = new Date(day * SECONDS_IN_A_DAY);
-        var nextQuarterDate = GdpGaussianGenerator._getNextQuarterDate(date);
+        var nextQuarterDate = this._getNextQuarterDate(date);
         var gdp = QUARTERLY_GDP_ARRAY.get(formatDate(nextQuarterDate));
         if (gdp) {
             return (gdp.GDPGROWTH / 365 / 100);
         } else {
             return 0.00005;
         }
-    },
+    }
 
-    _getNextQuarterDate: (d) => {
+    _getNextQuarterDate(d) {
         var month = d.getMonth();
         var nextQuarter = Math.floor(month / 3) * 3 + 3;
         var yearIncrement = 0;
@@ -101,9 +104,9 @@ const GdpGaussianGenerator = {
         }
 
         return new Date(d.getFullYear() + yearIncrement, nextQuarter, 1);
-    },
+    }
 
-    _gaussian: (mean, stdev) => {
+    _gaussian(mean, stdev) {
         var y2;
         var use_last = false;
         return function () {
@@ -129,5 +132,5 @@ const GdpGaussianGenerator = {
                 return retval;
             return -retval;
         }
-    },
+    }
 }

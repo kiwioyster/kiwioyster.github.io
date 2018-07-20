@@ -1,33 +1,46 @@
-const CompanyOneStock = {
+class Company {
+    constructor(companyName, ticker) {
+        this.stockPricesData = [];
+        this.companyName = companyName;
+        this.ticker = ticker;
+    }
 
-    populate: function (rawDbData) {
-        var data = CompanyOneStock._getFormattedData(rawDbData);
-        Highcharts.stockChart('companyOneChartContainer', {
+    set stockPrice(d) {
+        this.stockPricesData = d;
+    }
+
+    set newStockPrice(d) {
+        this.stockPrice.append(d);
+    }
+
+    createChart(chartContainerName) {
+        var data = this._getFormattedData(this.stockPricesData);
+        Highcharts.stockChart(chartContainerName, {
 
             title: {
-                text: 'AAPL stock price by minute'
+                text: `${this.companyName} Stock Prices`
             },
 
             rangeSelector: {
                 buttons: [{
                     type: 'month',
-                    count: 3,
-                    text: '3m'
+                    count: 18,
+                    text: '18m'
                 }, {
                     type: 'year',
-                    count: 1,
-                    text: '1y'
+                    count: 5,
+                    text: '5y'
                 }, {
                     type: 'year',
-                    count: 10,
-                    text: '10y'
+                    count: 20,
+                    text: '20y'
                 }],
                 selected: 1,
                 inputEnabled: false
             },
 
             series: [{
-                name: 'AAPL',
+                name: this.ticker,
                 type: 'candlestick',
                 data: data,
                 tooltip: {
@@ -35,9 +48,9 @@ const CompanyOneStock = {
                 }
             }]
         });
-    },
+    }
 
-    _getFormattedData: function (days) {
+    _getFormattedData(days) {
         // var date = new Date();
         // var ms = date.getTime();
         var formattedDays = days.map(d => {
