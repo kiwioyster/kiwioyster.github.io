@@ -86,7 +86,7 @@ class GdpGaussianGenerator {
     _getForwardGdpGrowth(day) {
         var date = new Date(day * SECONDS_IN_A_DAY);
         var nextQuarterDate = this._getNextQuarterDate(date);
-        var gdp = QUARTERLY_GDP_ARRAY.get(formatDate(nextQuarterDate));
+        var gdp = QUARTERLY_GDP_ARRAY.get(this._formatDate(nextQuarterDate));
         if (gdp) {
             return (gdp.GDPGROWTH / 365 / 100);
         } else {
@@ -132,5 +132,17 @@ class GdpGaussianGenerator {
                 return retval;
             return -retval;
         }
+    }
+
+    _formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
     }
 }

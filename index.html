@@ -16,12 +16,6 @@
   }
 </style>
 
-<script type="text/javascript" src="./src/global-data.set.js"></script>
-<script type="text/javascript" src="./src/database/store-names.set.js"></script>
-<script type="text/javascript" src="./src/companies/company.class.js"></script>
-<script type="text/javascript" src="./src/database/database-request.js"></script>
-<script type="text/javascript" src="./src/services/price-generators/gdp-gaussian-based.object.js"></script>
-
 <body>
 
   <!-- Navbar -->
@@ -31,17 +25,9 @@
         title="Toggle Navigation Menu">
         <i class="fa fa-bars"></i>
       </a>
-      <a href="#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-      <a href="#" class="w3-bar-item w3-button w3-padding-large" onClick="companyOne.createChart('chartContainer')">ONE</a>
-      <a href="#" class="w3-bar-item w3-button w3-padding-large" onClick="companyTwo.createChart('chartContainer')">TWM</a>
-      <a href="#" class="w3-bar-item w3-button w3-padding-large" onClick="companyThree.createChart('chartContainer')">TRIF</a>
-
+      <a href="./src/stocks/stocks.html" class="w3-bar-item w3-button w3-padding-large">STOCKS</a>
     </div>
   </div>
-
-  <script type="text/javascript" src="./lib/highstock.js"></script>
-  <script type="text/javascript" src="./src/stock-chart/company-one/company-one-stock.object.js"></script>
-  <div id="chartContainer" style="height: 880px; width: 100%;"></div>
 
   <div id="page-wrapper">
     <div>

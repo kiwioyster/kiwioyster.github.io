@@ -117,28 +117,3 @@ const DB = {
         };
     }
 }
-
-
-function _addInitialStockData(store) {
-    store.add({
-        day: 0,
-        open: 123,
-        high: 145,
-        low: 123,
-        close: 142
-    });
-    store.add({
-        day: 1,
-        open: 140,
-        high: 146,
-        low: 133,
-        close: 139
-    });
-    store.add({
-        day: 2,
-        open: 134,
-        high: 136,
-        low: 123,
-        close: 124
-    });
-}

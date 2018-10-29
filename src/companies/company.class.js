@@ -15,7 +15,20 @@ class Company {
 
     createChart(chartContainerName) {
         var data = this._getFormattedData(this.stockPricesData);
-        Highcharts.stockChart(chartContainerName, {
+        Highcharts.stockChart(chartContainerName, this._getStockChartObj(data));
+    }
+
+    createLogChart(chartContainerName) {
+        var data = this._getFormattedData(this.stockPricesData);
+        var chartObj = this._getStockChartObj(data);
+        chartObj['yAxis'] = {
+            type: 'logarithmic'
+        };
+        Highcharts.stockChart(chartContainerName, chartObj);
+    }
+
+    _getStockChartObj(data) {
+        return {
 
             title: {
                 text: `${this.companyName} Stock Prices`
@@ -42,12 +55,12 @@ class Company {
             series: [{
                 name: this.ticker,
                 type: 'candlestick',
-                data: data,
+                data,
                 tooltip: {
                     valueDecimals: 2
                 }
             }]
-        });
+        };
     }
 
     _getFormattedData(days) {
