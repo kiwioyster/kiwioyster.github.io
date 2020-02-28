@@ -7,113 +7,114 @@ var companyTwo = new Company('Twice Manufacturing Ltd.', 'TWM');
 var companyThree = new Company('Trifactor Inc.', 'TRIF');
 
 dbRequest.onupgradeneeded = function () {
-    // var db = dbRequest.result;
-    // var storeThree = db.createObjectStore(COMPANY_THREE, {
-    //     keyPath: "day"
-    // });
-    // var storeTwo = db.createObjectStore(COMPANY_TWO, {
-    //     keyPath: "day"
-    // });
-    // var gdpStore = db.createObjectStore(QUARTERLY_GDP, {
-    //     keyPath: "DATE"
-    // });
-    // var storeOne = db.createObjectStore(COMPANY_ONE, {
-    //     keyPath: "day"
-    // });
-    // storeThree.transaction.oncomplete = function (event) {
-    //     var tx = db.transaction("companyOne", "readwrite");
-    //     var companyOneStore = tx.objectStore("companyOne");
-    //     tx.oncomplete = function () {
-    //         db.close();
-    //     };
-    // }
-    // };
+  console.log('need upgrade')
+  // var db = dbRequest.result;
+  // var storeThree = db.createObjectStore(COMPANY_THREE, {
+  //     keyPath: "day"
+  // });
+  // var storeTwo = db.createObjectStore(COMPANY_TWO, {
+  //     keyPath: "day"
+  // });
+  // var gdpStore = db.createObjectStore(QUARTERLY_GDP, {
+  //     keyPath: "DATE"
+  // });
+  // var storeOne = db.createObjectStore(COMPANY_ONE, {
+  //     keyPath: "day"
+  // });
+  // storeThree.transaction.oncomplete = function (event) {
+  //     var tx = db.transaction("companyOne", "readwrite");
+  //     var companyOneStore = tx.objectStore("companyOne");
+  //     tx.oncomplete = function () {
+  //         db.close();
+  //     };
+  // }
+  // };
 }
 
 dbRequest.onsuccess = function () {
-    var getAllCompanyOne = DB.getAll(COMPANY_ONE);
-    var getAllCompanyTwo = DB.getAll(COMPANY_TWO);
-    var getAllCompanyThree = DB.getAll(COMPANY_THREE);
-    var getAllQuarterlyGdp = DB.getAll(QUARTERLY_GDP);
+  // var getAllCompanyOne = DB.getAll(COMPANY_ONE);
+  // var getAllCompanyTwo = DB.getAll(COMPANY_TWO);
+  // var getAllCompanyThree = DB.getAll(COMPANY_THREE);
+  // var getAllQuarterlyGdp = DB.getAll(QUARTERLY_GDP);
 
-    getAllQuarterlyGdp.onsuccess = function () {
-        QUARTERLY_GDP_ARRAY.set(getAllQuarterlyGdp.result);
-    }
-    getAllCompanyTwo.onsuccess = function () {
-        if (getAllCompanyTwo.result.prices) {
-            companyTwo.stockPrice = getAllCompanyTwo.result.prices;
-        } else {
-            companyTwo.stockPrice = getAllCompanyTwo.result;
-        }
-    }
-    getAllCompanyOne.onsuccess = function () {
-        if (getAllCompanyOne.result.prices) {
-            companyOne.stockPrice = getAllCompanyOne.result.prices;
-        } else {
-            companyOne.stockPrice = getAllCompanyOne.result;
-        }
-    }
-    getAllCompanyThree.onsuccess = function () {
-        if (getAllCompanyThree.result.prices) {
-            companyThree.stockPrice = getAllCompanyThree.result.prices;
-        } else {
-            companyThree.stockPrice = getAllCompanyThree.result;
-        }
-    }
+  // getAllQuarterlyGdp.onsuccess = function () {
+  //   QUARTERLY_GDP_ARRAY.set(getAllQuarterlyGdp.result);
+  // }
+  // getAllCompanyTwo.onsuccess = function () {
+  //   if (getAllCompanyTwo.result.prices) {
+  //     companyTwo.stockPrice = getAllCompanyTwo.result.prices;
+  //   } else {
+  //     companyTwo.stockPrice = getAllCompanyTwo.result;
+  //   }
+  // }
+  // getAllCompanyOne.onsuccess = function () {
+  //   if (getAllCompanyOne.result.prices) {
+  //     companyOne.stockPrice = getAllCompanyOne.result.prices;
+  //   } else {
+  //     companyOne.stockPrice = getAllCompanyOne.result;
+  //   }
+  // }
+  // getAllCompanyThree.onsuccess = function () {
+  //   if (getAllCompanyThree.result.prices) {
+  //     companyThree.stockPrice = getAllCompanyThree.result.prices;
+  //   } else {
+  //     companyThree.stockPrice = getAllCompanyThree.result;
+  //   }
+  // }
 
 }
 
 const DB = {
 
-    addRows: (storeName, rows) => {
-        // Start a new transaction
-        var db = dbRequest.result;
-        var tx = db.transaction(storeName, "readwrite");
-        var store = tx.objectStore(storeName);
+  addRows: (storeName, rows) => {
+    // Start a new transaction
+    var db = dbRequest.result;
+    var tx = db.transaction(storeName, "readwrite");
+    var store = tx.objectStore(storeName);
 
-        rows.forEach(r => {
-            store.add(r);
-        })
+    rows.forEach(r => {
+      store.add(r);
+    })
 
-        tx.oncomplete = function () {
-            db.close();
-        };
-    },
+    tx.oncomplete = function () {
+      db.close();
+    };
+  },
 
-    deleteRows: (storeName, rows) => {
-        // Start a new transaction
-        var db = dbRequest.result;
-        var tx = db.transaction(storeName, "readwrite");
-        var store = tx.objectStore(storeName);
+  deleteRows: (storeName, rows) => {
+    // Start a new transaction
+    var db = dbRequest.result;
+    var tx = db.transaction(storeName, "readwrite");
+    var store = tx.objectStore(storeName);
 
-        rows.forEach(r => {
-            store.delete(r.day);
-        })
+    rows.forEach(r => {
+      store.delete(r.day);
+    })
 
-        tx.oncomplete = function () {
-            db.close();
-        };
-    },
+    tx.oncomplete = function () {
+      db.close();
+    };
+  },
 
-    getAll: (storeName) => {
-        var db = dbRequest.result;
-        var tx = db.transaction(storeName, "readwrite");
-        var store = tx.objectStore(storeName);
-        return store.getAll();
+  getAll: (storeName) => {
+    var db = dbRequest.result;
+    var tx = db.transaction(storeName, "readwrite");
+    var store = tx.objectStore(storeName);
+    return store.getAll();
 
-        tx.oncomplete = function () {
-            db.close();
-        };
-    },
+    tx.oncomplete = function () {
+      db.close();
+    };
+  },
 
-    clear: (storeName) => {
-        var db = dbRequest.result;
-        var tx = db.transaction(storeName, "readwrite");
-        var store = tx.objectStore(storeName);
-        store.clear();
+  clear: (storeName) => {
+    var db = dbRequest.result;
+    var tx = db.transaction(storeName, "readwrite");
+    var store = tx.objectStore(storeName);
+    store.clear();
 
-        tx.oncomplete = function () {
-            db.close();
-        };
-    }
+    tx.oncomplete = function () {
+      db.close();
+    };
+  }
 }
